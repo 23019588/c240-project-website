@@ -1,0 +1,29 @@
+{
+  "root": "c:\\Curicculum\\C240\\c240-project-website",
+  "proxy": null,
+  "notifier": null,
+  "port": 5500,
+  "liveInterval": 3000,
+  "open": false,
+  "ignore": "scss,my-custom-process-todo.json",
+  "extensions": {
+    "defaults": [
+      "html",
+      "json",
+      "xml",
+      "js",
+      "css"
+    ]
+  },
+  "extraExtendsRequired": [],
+  "ignorePattern": "^(?!^#fileName#)(?!^Output\\/)(.+?\\/)(.+)",
+  "hostName": "localhost",
+  "https": false,
+  "showOnStart": true,
+  "fullReload": true,
+  "useWebExt": false,
+  "file": "index.html",
+  "onSave": "reload",
+  "wait": 100,
+  "mount": []
+}

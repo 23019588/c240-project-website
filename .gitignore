@@ -1,0 +1,78 @@
+# ============================================
+# MindEase Project - Git Ignore File
+# ============================================
+
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+*.nvim
+.netrwhist
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build / Production
+dist/
+build/
+.cache/
+*.log
+*.tar.gz
+
+# OS specific
+*.exe
+*.so
+*.dylib
+
+# Testing
+coverage/
+.nyc_output/
+
+# Development
+debug/
+temp/
+tmp/
+.temp/
+
+# Package manager lock files (optional - uncomment if not using)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# User-specific files
+*.suo
+*.user
+.project
+.classpath
+
+# Configuration backups
+*.bak
+*.backup
+~*
+
+# Compiled files
+*.js.map
+*.css.map
+*.ts.map
