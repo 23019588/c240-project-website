@@ -63,6 +63,11 @@ const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const sendBtn = document.getElementById('sendBtn');
 const contactForm = document.getElementById('contactForm');
+const chatContainer = document.querySelector('.chat-container');
+
+// Botpress shareable URL (embed via iframe)
+const BOTPRESS_SHAREABLE_URL = 'https://cdn.botpress.cloud/webchat/v3.5/shareable.html?configUrl=https://files.bpcontent.cloud/2026/01/13/04/20260113041415-LRC6BDKT.json';
+let _originalChatContainerHTML = null;
 
 // ============================================
 // NAVIGATION: Hamburger Menu Toggle
@@ -112,14 +117,35 @@ window.addEventListener('scroll', debounce(() => {
 // ============================================
 
 function openChatModal() {
+    // If we have a chat container, replace its content with the Botpress iframe
+    if (chatContainer) {
+        if (!_originalChatContainerHTML) _originalChatContainerHTML = chatContainer.innerHTML;
+        // Clear existing content and add iframe
+        chatContainer.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.src = BOTPRESS_SHAREABLE_URL;
+        iframe.title = 'MindEase Chat';
+        Object.assign(iframe.style, {
+            width: '100%',
+            height: '70vh',
+            border: '0',
+            borderRadius: '8px'
+        });
+        iframe.setAttribute('allow', 'microphone; camera;');
+        chatContainer.appendChild(iframe);
+    }
     chatModal.style.display = 'block';
-    chatInput.focus();
     // Track analytics
-    trackEvent('chat_opened', { timestamp: new Date().toISOString() });
+    trackEvent('botpress_chat_opened', { timestamp: new Date().toISOString() });
 }
 
 function closeChatModal() {
     chatModal.style.display = 'none';
+    // Restore original chat content if we replaced it
+    if (chatContainer && _originalChatContainerHTML) {
+        chatContainer.innerHTML = _originalChatContainerHTML;
+        _originalChatContainerHTML = null;
+    }
 }
 
 // Modal button events
