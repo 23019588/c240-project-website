@@ -54,7 +54,6 @@ const observer = new IntersectionObserver((entries) => {
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
-const startChatBtn = document.getElementById('startChatBtn');
 const ctaBtn = document.getElementById('ctaBtn');
 const learnMoreBtn = document.getElementById('learnMoreBtn');
 const chatModal = document.getElementById('chatModal');
@@ -117,39 +116,25 @@ window.addEventListener('scroll', debounce(() => {
 // ============================================
 
 function openChatModal() {
-    // If we have a chat container, replace its content with the Botpress iframe
-    if (chatContainer) {
-        if (!_originalChatContainerHTML) _originalChatContainerHTML = chatContainer.innerHTML;
-        // Clear existing content and add iframe
-        chatContainer.innerHTML = '';
-        const iframe = document.createElement('iframe');
-        iframe.src = BOTPRESS_SHAREABLE_URL;
-        iframe.title = 'MindEase Chat';
-        Object.assign(iframe.style, {
-            width: '100%',
-            height: '70vh',
-            border: '0',
-            borderRadius: '8px'
-        });
-        iframe.setAttribute('allow', 'microphone; camera;');
-        chatContainer.appendChild(iframe);
-    }
-    chatModal.style.display = 'block';
+    console.log('Opening chat modal with URL:', BOTPRESS_SHAREABLE_URL);
+    // Open the Botpress chat in a new window
+    window.open(BOTPRESS_SHAREABLE_URL, 'MindEaseChat', 'width=500,height=700,resizable=yes,scrollbars=yes');
+    
     // Track analytics
     trackEvent('botpress_chat_opened', { timestamp: new Date().toISOString() });
 }
 
 function closeChatModal() {
-    chatModal.style.display = 'none';
-    // Restore original chat content if we replaced it
-    if (chatContainer && _originalChatContainerHTML) {
-        chatContainer.innerHTML = _originalChatContainerHTML;
-        _originalChatContainerHTML = null;
+    if (!chatModal) {
+        console.error('Chat modal element not found');
+        return;
     }
+    
+    chatModal.style.display = 'none';
+    console.log('Chat modal closed');
 }
 
 // Modal button events
-if (startChatBtn) startChatBtn.addEventListener('click', openChatModal);
 if (ctaBtn) ctaBtn.addEventListener('click', openChatModal);
 if (learnMoreBtn) learnMoreBtn.addEventListener('click', () => {
     document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
@@ -163,6 +148,20 @@ window.addEventListener('click', (event) => {
         closeChatModal();
     }
 });
+
+// ============================================
+// FEATURE CARDS: Chat Button Integration
+// ============================================
+
+function openFeatureChat(chatUrl) {
+    console.log('Opening feature chat with URL:', chatUrl);
+    // Open the Botpress chat in a new window
+    window.open(chatUrl, 'MindEaseChat', 'width=500,height=700,resizable=yes,scrollbars=yes');
+    
+    trackEvent('feature_chat_opened', { chat_url: chatUrl, timestamp: new Date().toISOString() });
+}
+
+
 
 // ============================================
 // CHAT: AI Response System
@@ -457,6 +456,18 @@ document.addEventListener('DOMContentLoaded', () => {
     setupLazyLoading();
     setupAccessibility();
     
+    // Initialize feature chat buttons after DOM load
+    const featureChatBtns = document.querySelectorAll('.chat-feature-btn');
+    featureChatBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const chatUrl = btn.getAttribute('data-chat-url');
+            if (chatUrl) {
+                openFeatureChat(chatUrl);
+            }
+        });
+    });
+    
     // Track page view
     trackEvent('page_view', {
         page: window.location.pathname,
@@ -464,6 +475,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     console.log('MindEase App Initialized ✨');
+    console.log('CTA Button:', ctaBtn);
+    console.log('Chat Modal:', chatModal);
+    console.log('Chat Container:', chatContainer);
 });
 
 // ============================================
